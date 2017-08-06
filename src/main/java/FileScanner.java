@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +59,8 @@ public class FileScanner {
                     currentFileNumber++;
                     printProgress(fileName);
                     if (isFileContainsFb(file)) {
-                        fileBuster.RemoveFeatureBitFromFile(file.getAbsolutePath());
+                        String newContent = fileBuster.RemoveFeatureBitFromFile(file.getAbsolutePath());
+                        writeContentToFile(newContent,file.getAbsolutePath());
                         affectedFiles.add(file.getAbsolutePath());
                     }
                 }
@@ -133,6 +132,19 @@ public class FileScanner {
         System.out.println("The following files were affected:");
         for (String filename: affectedFiles){
             System.out.println(filename);
+        }
+
+
+
+    }
+
+    private void writeContentToFile(String content, String path){
+        try{
+            PrintWriter writer = new PrintWriter(path, "UTF-8");
+            writer.print(content);
+            writer.close();
+        } catch (IOException e) {
+            // do something
         }
     }
 }

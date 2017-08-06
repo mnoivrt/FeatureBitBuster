@@ -1,6 +1,4 @@
-
 import java.io.FileNotFoundException;
-
 
 /**
  * Created by moshe on 03/08/2017.
@@ -8,12 +6,7 @@ import java.io.FileNotFoundException;
 public class main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        FileScanner fileScanner = new FileScanner(
-                "test",
-                "feature.arithmetic_addition");
+        FileScanner fileScanner = new FileScanner("./", "feature.arithmetic_addition");
         fileScanner.scan();
-
     }
-
-
 }

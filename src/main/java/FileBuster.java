@@ -24,7 +24,7 @@ public class FileBuster {
         this.fbName = fbName;
     }
 
-    public void RemoveFeatureBitFromFile(String path) throws FileNotFoundException {
+    public String RemoveFeatureBitFromFile(String path) throws FileNotFoundException {
         FileInputStream in = new FileInputStream(path);
         CompilationUnit compilationUnit = JavaParser.parse(in);
 
@@ -37,9 +37,9 @@ public class FileBuster {
             }
         }
 
-            System.out.println("output: ");
-            System.out.println(compilationUnit.toString());
-
+//            System.out.println("output: ");
+//            System.out.println(compilationUnit.toString());
+        return compilationUnit.toString();
 
     }
 
