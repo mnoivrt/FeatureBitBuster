@@ -21,7 +21,7 @@ public class IfStatmentHandler implements IStatementHandler {
                     takeThenPart(statement, blockStmt);
                     break;
                 case "false" :
-                    takeThenPart(statement, blockStmt);
+                    takeElsePart(statement, blockStmt);
                     break;
                 default:
                     ((IfStmt)statement).setCondition((Expression) reducedCondition);
@@ -33,6 +33,12 @@ public class IfStatmentHandler implements IStatementHandler {
         Node thenNode = ((IfStmt) statement).getThenStmt();
         blockStmt.remove(statement);
         blockStmt.addStatement(thenNode.toString());
+    }
+
+    private void takeElsePart(Statement statement, BlockStmt blockStmt) {
+        Node elseNode = ((IfStmt) statement).getElseStmt().get();
+        blockStmt.remove(statement);
+        blockStmt.addStatement(elseNode.toString());
     }
 
 

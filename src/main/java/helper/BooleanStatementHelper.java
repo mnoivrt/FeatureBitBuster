@@ -40,7 +40,7 @@ public class BooleanStatementHelper {
 
 
     private boolean expressionIsFB(Expression expression, String fbName) {
-        return expression.toString().endsWith("fb.isEnabled(\"" + fbName + "\")");
+        return expression.toString().endsWith(FeatureBitsConsts.FB_SERVICE_CALL + "(\"" + fbName + "\")");
     }
 
     private boolean isEqualToOperator(BinaryExpr binaryExpr, BinaryExpr.Operator operator) {
