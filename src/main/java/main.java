@@ -46,20 +46,23 @@ public class main {
         for(Statement statement : blockStmt.getStatements()){
             if(isIf(statement)){
                 if(condContainsFb(fbName, statement)){
-                    removeFeatureBitFromIfStatment(fbName,statement);
+                    Node thenNode = removeFeatureBitFromIfStatment(fbName,statement);
+                    blockStmt.remove(statement);
+                    blockStmt.addStatement(thenNode.toString());
                 }
             }
         }
     }
 
-    //check and if statement and remove fb it it appears in it
-    private static void removeFeatureBitFromIfStatment(String fbName, Statement statement) {
+    //check  if statement and remove fb it it appears in it
+    private static Node removeFeatureBitFromIfStatment(String fbName, Statement statement) {
         Node cond = getIfCond(statement);
         if (cond.getTokenRange().get().toString().equals("fb.isEnabled(\"" + fbName + "\")")){
-            statement.remove(getIfDoWhenFalse(statement));
+          return getIfDoWhenTrue(statement);
         }
         else{
             //the if condition is more complicated than just asking if the fb is enabled
+            return null;
         }
     }
 
