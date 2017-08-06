@@ -19,14 +19,12 @@ import java.io.FileNotFoundException;
 public class FileBuster {
 
     String fbName;
-    String path;
 
-    public FileBuster(String path, String fbName) {
+    public FileBuster(String fbName) {
         this.fbName = fbName;
-        this.path = path;
     }
 
-    public void RemoveFeatureBitFromFile() throws FileNotFoundException {
+    public void RemoveFeatureBitFromFile(String path) throws FileNotFoundException {
         FileInputStream in = new FileInputStream(path);
         CompilationUnit compilationUnit = JavaParser.parse(in);
 
@@ -39,18 +37,24 @@ public class FileBuster {
             }
         }
 
+            System.out.println("output: ");
+            System.out.println(compilationUnit.toString());
+
+
     }
 
-    private  void removeFBFromMethod(String fbName, MethodDeclaration member) {
+    private void removeFBFromMethod(String fbName, MethodDeclaration member) {
         MethodDeclaration method = member;
         BlockStmt blockStmt = method.getBody().get();
         NodeList<Statement> statements =   blockStmt.getStatements();
         for(Statement statement : statements){
-                IfStatementHandler ifStatementHandler = new IfStatementHandler();
-                ifStatementHandler.Execute2(statement,fbName,blockStmt);
+                IfStatmentHandler ifStatementHandler = new IfStatmentHandler();
+                ifStatementHandler.Execute(statement,fbName,blockStmt);
             }
         }
 
 
-
+    public String getFbName() {
+        return fbName;
+    }
 }

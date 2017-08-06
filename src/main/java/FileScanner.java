@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,20 +14,20 @@ import java.nio.file.Paths;
 public class FileScanner {
     public static final String FILE_TYPE = "java";
 
-    String fbName;
+    FileBuster fileBuster;
     String path;
 
     public FileScanner(String path, String fbName) {
-        this.fbName = fbName;
+        fileBuster = new FileBuster(fbName);
         this.path = path;
     }
 
-    public void scan(){
+    public void scan() throws FileNotFoundException {
         File[] files = new File(path).listFiles();
         traverseFiles(files);
     }
 
-    private void traverseFiles(File[] files) {
+    private void traverseFiles(File[] files) throws FileNotFoundException {
         for (File file : files) {
             String fileName = file.getName();
 
@@ -35,8 +36,10 @@ public class FileScanner {
             } else {
                 String fileExtension = getFileExtension(fileName);
                 if(fileExtension.equals(FILE_TYPE))
-                    if(isFileContainsFb(file))
+                    if(isFileContainsFb(file)) {
+                        fileBuster.RemoveFeatureBitFromFile(file.getAbsolutePath());
                         System.out.println("returned File: " + file.getAbsolutePath());
+                    }
             }
         }
     }
@@ -51,7 +54,7 @@ public class FileScanner {
             fis.read(data);
             fis.close();
             String content = new String(data, "UTF-8");
-            fileContainsFb = content.contains(fbName);
+            fileContainsFb = content.contains(fileBuster.getFbName());
         }catch (Exception ex) {
             System.out.println(ex.toString());
         }
