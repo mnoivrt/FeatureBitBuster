@@ -1,10 +1,7 @@
 package helper;
 
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.expr.BinaryExpr;
-import com.github.javaparser.ast.expr.BooleanLiteralExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.UnaryExpr;
+import com.github.javaparser.ast.expr.*;
 
 public class BooleanStatementHelper {
 
@@ -35,14 +32,15 @@ public class BooleanStatementHelper {
             return eval((BinaryExpr) expression, fbName);
         } else if (expression instanceof UnaryExpr) {
             return eval((UnaryExpr) expression, fbName);
+        } else if ((expression instanceof MethodCallExpr || expression instanceof NameExpr) && expressionIsFB(expression, fbName)) {
+            return new BooleanLiteralExpr(true);
         }
         return expression;
     }
 
 
-        private boolean expressionIsFB(Expression expression, String fbName) {
-        return expression.toString().endsWith("fb.isEnabled(\"" + fbName + "\")");
-
+    private boolean expressionIsFB(Expression expression, String fbName) {
+        return expression.toString().endsWith(FeatureBitsConsts.FB_SERVICE_CALL + "(\"" + fbName + "\")");
     }
 
     private boolean isEqualToOperator(BinaryExpr binaryExpr, BinaryExpr.Operator operator) {
