@@ -10,7 +10,7 @@ public class main {
     public static void main(String[] args) throws FileNotFoundException {
         FileScanner fileScanner = new FileScanner(
                 "test",
-                "feature.arithmetic_multipcation");
+                "feature.arithmetic_addition");
         fileScanner.scan();
 
     }

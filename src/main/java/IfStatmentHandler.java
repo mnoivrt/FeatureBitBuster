@@ -10,26 +10,31 @@ import helper.BooleanStatementHelper;
  * Created by moshe on 06/08/2017.
  */
 public class IfStatmentHandler implements IStatementHandler {
-    @Override
+
     public void Execute(Statement statement, String fbName, BlockStmt blockStmt) {
         if (isIfStatment(statement) &&  conditionContainsFB(((IfStmt)statement).getCondition(),fbName)){
             Node cond = ((IfStmt)statement).getCondition();
-            if (isConditionContainsOnlyFB(cond, fbName)){
-                Node thenNode = ((IfStmt) statement).getThenStmt();
-                blockStmt.remove(statement);
-                blockStmt.addStatement(thenNode.toString());
-            }
-            else {
-                BooleanStatementHelper booleanStatementHelper = new BooleanStatementHelper();
-                Node reducedCondition = booleanStatementHelper.eval((BinaryExpr)cond,fbName);
-                ((IfStmt)statement).setCondition((Expression) reducedCondition);
+            BooleanStatementHelper booleanStatementHelper = new BooleanStatementHelper();
+            Node reducedCondition = booleanStatementHelper.eval((Expression) cond,fbName);
+            switch (reducedCondition.toString()){
+                case "true" :
+                    takeThenPart(statement, blockStmt);
+                    break;
+                case "false" :
+                    takeThenPart(statement, blockStmt);
+                    break;
+                default:
+                    ((IfStmt)statement).setCondition((Expression) reducedCondition);
             }
         }
     }
 
-    private boolean isConditionContainsOnlyFB(Node cond, String fbName) {
-        return cond.toString().equals("fb.isEnabled(\"" + fbName + "\")");
+    private void takeThenPart(Statement statement, BlockStmt blockStmt) {
+        Node thenNode = ((IfStmt) statement).getThenStmt();
+        blockStmt.remove(statement);
+        blockStmt.addStatement(thenNode.toString());
     }
+
 
     private boolean isIfStatment(Statement statement){
         return  statement instanceof IfStmt;
