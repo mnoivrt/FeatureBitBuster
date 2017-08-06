@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,13 +43,19 @@ public class FileScanner {
 
     private boolean isFileContainsFb(File file) {
         boolean fileContainsFb = false;
-        try{
-            Path filePath = Paths.get(file.getName());
-            String content = new String(Files.readAllBytes(filePath));
+
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] data = new byte[(int) file.length()];
+
+            fis.read(data);
+            fis.close();
+            String content = new String(data, "UTF-8");
             fileContainsFb = content.contains(fbName);
-        }catch (Exception ex){
+        }catch (Exception ex) {
             System.out.println(ex.toString());
         }
+
         return fileContainsFb;
     }
 
