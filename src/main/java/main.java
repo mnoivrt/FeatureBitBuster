@@ -19,7 +19,7 @@ public class main {
 
     public static void main(String[] args) throws FileNotFoundException {
         String fbName = "feature.arithmetic_addition";
-        FileInputStream in = new FileInputStream("/Users/moshe/innovid/FeatureBitBuster/test.java");
+        FileInputStream in = new FileInputStream("./test.java");
 
         CompilationUnit cu = JavaParser.parse(in);
         NodeList<TypeDeclaration<?>> types = cu.getTypes();
