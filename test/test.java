@@ -17,11 +17,12 @@
     }
 
      private int mul(int x, int y){
-         boolean a = fb.isEnabled("feature.arithmetic_multipcation") && x;
+         boolean a = fb.isEnabled("feature.arithmetic_multipcation") && x && y;
          boolean b = a && fb.isEnabled("feature.arithmetic_multipcation");
          boolean c = b || fb.isEnabled("feature.arithmetic_multipcation");
          boolean d = fb.isEnabled("feature.arithmetic_multipcation") || f;
          boolean e = !fb.isEnabled("feature.arithmetic_multipcation");
+         boolean f = fb.isEnabled("feature.arithmetic_multipcation");
          if (y){
              int answer = x * y;
              return answer;
