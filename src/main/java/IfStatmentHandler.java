@@ -5,6 +5,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import helper.BooleanStatementHelper;
+import helper.SimpleFeatureBitDetector;
 
 /**
  * Created by moshe on 06/08/2017.
@@ -14,7 +15,7 @@ public class IfStatmentHandler implements IStatementHandler {
     public void Execute(Statement statement, String fbName, BlockStmt blockStmt) {
         if (isIfStatment(statement) &&  conditionContainsFB(((IfStmt)statement).getCondition(),fbName)){
             Node cond = ((IfStmt)statement).getCondition();
-            BooleanStatementHelper booleanStatementHelper = new BooleanStatementHelper();
+            BooleanStatementHelper booleanStatementHelper = new BooleanStatementHelper(new SimpleFeatureBitDetector());
             Node reducedCondition = booleanStatementHelper.eval((Expression) cond,fbName);
             switch (reducedCondition.toString()){
                 case "true" :

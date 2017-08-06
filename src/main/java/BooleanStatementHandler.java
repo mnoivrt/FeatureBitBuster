@@ -7,6 +7,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import helper.BooleanStatementHelper;
+import helper.SimpleFeatureBitDetector;
 
 /**
  * Created by aran on 06/08/2017.
@@ -16,7 +17,7 @@ public class BooleanStatementHandler implements IStatementHandler {
     {
         if(IsBooleanStatement(statement) && IsContainsFb(fbName, statement))
         {
-            BooleanStatementHelper helper = new BooleanStatementHelper();
+            BooleanStatementHelper helper = new BooleanStatementHelper(new SimpleFeatureBitDetector());
             Expression newCondition = helper.eval(ExtractBoolCondition(statement), fbName);
             UpdateBoolCondition(statement, newCondition);
         }
