@@ -1,10 +1,13 @@
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 
 import java.io.FileInputStream;
@@ -18,7 +21,7 @@ public class FileBuster {
     String fbName;
     String path;
 
-    public FileBuster(String path, String fbName){
+    public FileBuster(String path, String fbName) {
         this.fbName = fbName;
         this.path = path;
     }
@@ -35,14 +38,19 @@ public class FileBuster {
                 }
             }
         }
+
     }
 
-    private static void removeFBFromMethod(String fbName, MethodDeclaration member) {
+    private  void removeFBFromMethod(String fbName, MethodDeclaration member) {
         MethodDeclaration method = member;
         BlockStmt blockStmt = method.getBody().get();
-        for(Statement statement : blockStmt.getStatements()){
-                //here we should call the statment handlers
+        NodeList<Statement> statements =   blockStmt.getStatements();
+        for(Statement statement : statements){
+                IfStatementHandler ifStatementHandler = new IfStatementHandler();
+                ifStatementHandler.Execute2(statement,fbName,blockStmt);
             }
         }
+
+
 
 }
