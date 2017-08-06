@@ -127,15 +127,17 @@ public class FileScanner {
         }
     }
 
-    private void printResults(){
-        System.out.println();
-        System.out.println("The following files were affected:");
+    public String printResults(){
+        StringBuilder sbResult = new StringBuilder();
+
+        sbResult.append(affectedFiles.size() + " files were affected: \n");
         for (String filename: affectedFiles){
-            System.out.println(filename);
+            sbResult.append(filename + "\n");
         }
 
 
-
+        System.out.print(sbResult.toString());
+        return sbResult.toString();
     }
 
     private void writeContentToFile(String content, String path){
