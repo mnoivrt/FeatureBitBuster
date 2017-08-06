@@ -1,10 +1,9 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Aviv on 8/6/2017.
@@ -12,19 +11,42 @@ import java.nio.file.Paths;
 
 
 public class FileScanner {
-    public static final String FILE_TYPE = "java";
+    final String FILE_TYPE = "java";
 
     FileBuster fileBuster;
     String path;
+    int numOfFiles;
+    int currentFileNumber = 0;
+    List<String> affectedFiles;
 
     public FileScanner(String path, String fbName) {
         fileBuster = new FileBuster(fbName);
         this.path = path;
+        this.affectedFiles = new LinkedList<String>();
     }
 
     public void scan() throws FileNotFoundException {
         File[] files = new File(path).listFiles();
+        numOfFiles = getNumOfFiles(files);
+        System.out.println("Processing");
         traverseFiles(files);
+        printResults();
+    }
+
+    private int getNumOfFiles(File[] files){
+        int numOfFiles = 0;
+        for (File file : files) {
+            String fileName = file.getName();
+
+            if (file.isDirectory()) {
+                numOfFiles += getNumOfFiles(file.listFiles());
+            } else {
+                String fileExtension = getFileExtension(fileName);
+                if(fileExtension.equals(FILE_TYPE))
+                    numOfFiles++;
+            }
+        }
+        return numOfFiles;
     }
 
     private void traverseFiles(File[] files) throws FileNotFoundException {
@@ -35,11 +57,14 @@ public class FileScanner {
                 traverseFiles(file.listFiles());
             } else {
                 String fileExtension = getFileExtension(fileName);
-                if(fileExtension.equals(FILE_TYPE))
-                    if(isFileContainsFb(file)) {
+                if(fileExtension.equals(FILE_TYPE)) {
+                    currentFileNumber++;
+                    printProgress(fileName);
+                    if (isFileContainsFb(file)) {
                         fileBuster.RemoveFeatureBitFromFile(file.getAbsolutePath());
-                        System.out.println("returned File: " + file.getAbsolutePath());
+                        affectedFiles.add(file.getAbsolutePath());
                     }
+                }
             }
         }
     }
@@ -71,5 +96,43 @@ public class FileScanner {
         }
 
         return extension;
+    }
+
+    private  void printProgress(String fileName)  {
+        StringBuilder string = new StringBuilder(140);
+        int percent = (int) (currentFileNumber * 100 / numOfFiles);
+        String appendixMsg;
+        if(percent==100) {
+            fileName = "Finished";
+        }
+
+        string
+                .append('\r')
+                .append(String.join("", Collections.nCopies(percent == 0 ? 2 : 2 - (int) (Math.log10(percent)), " ")))
+                .append(String.format(" %d%% [", percent))
+                .append(String.join("", Collections.nCopies(percent, "=")))
+                .append('>')
+                .append(String.join("", Collections.nCopies(100 - percent, " ")))
+                .append(']')
+                .append(String.join("", Collections.nCopies((int) (Math.log10(numOfFiles)) - (int) (Math.log10(currentFileNumber)), " ")))
+                .append(String.format(" [%d/%d] "+ fileName, currentFileNumber, numOfFiles, fileName));
+
+        System.out.print(string);
+
+        try{
+            Thread.sleep(300);
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
+    private void printResults(){
+        System.out.println();
+        System.out.println("The following files were affected:");
+        for (String filename: affectedFiles){
+            System.out.println(filename);
+        }
     }
 }
