@@ -44,6 +44,5 @@ public class FileBuster {
                 //here we should call the statment handlers
             }
         }
-    }
 
 }
