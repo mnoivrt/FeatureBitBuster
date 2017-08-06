@@ -17,7 +17,7 @@ public class BooleanStatementHandler implements IStatementHandler {
         if(IsBooleanStatement(statement) && IsContainsFb(fbName, statement))
         {
             BooleanStatementHelper helper = new BooleanStatementHelper();
-            Expression newCondition = helper.eval((BinaryExpr)ExtractBoolCondition(statement), fbName);
+            Expression newCondition = helper.eval(ExtractBoolCondition(statement), fbName);
             UpdateBoolCondition(statement, newCondition);
         }
     }

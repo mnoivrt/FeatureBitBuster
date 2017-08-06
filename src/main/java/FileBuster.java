@@ -44,14 +44,16 @@ public class FileBuster {
     }
 
     private void removeFBFromMethod(String fbName, MethodDeclaration member) {
+        IfStatmentHandler ifStatementHandler = new IfStatmentHandler();
+        BooleanStatementHandler booleanStatementHandler = new BooleanStatementHandler();
         MethodDeclaration method = member;
         BlockStmt blockStmt = method.getBody().get();
         NodeList<Statement> statements =   blockStmt.getStatements();
         for(Statement statement : statements){
-                IfStatmentHandler ifStatementHandler = new IfStatmentHandler();
-                ifStatementHandler.Execute(statement,fbName,blockStmt);
-            }
+            ifStatementHandler.Execute(statement,fbName,blockStmt);
+            booleanStatementHandler.Execute(statement, fbName, blockStmt);
         }
+    }
 
 
     public String getFbName() {

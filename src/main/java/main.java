@@ -8,8 +8,9 @@ import java.io.FileNotFoundException;
 public class main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        FileScanner fileScanner = new FileScanner("/Users/moshe/innovid/FeatureBitBuster",
-                "feature.arithmetic_addition");
+        FileScanner fileScanner = new FileScanner(
+                "test",
+                "feature.arithmetic_multipcation");
         fileScanner.scan();
 
     }
