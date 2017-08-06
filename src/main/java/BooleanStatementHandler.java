@@ -1,5 +1,6 @@
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 
@@ -7,13 +8,12 @@ import com.github.javaparser.ast.stmt.Statement;
  * Created by aran on 06/08/2017.
  */
 public class BooleanStatementHandler implements IStatementHandler {
-    public Node Execute(Statement statement, String fbName)
+    public void Execute(Statement statement, String fbName, BlockStmt blockStmt)
     {
         if(IsBooleanStatement(statement) && IsContainsFb(fbName, statement))
         {
-            return statement.getChildNodes().get(0);
         }
-        return null;
+
 
     }
 
