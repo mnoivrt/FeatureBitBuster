@@ -20,7 +20,8 @@ public class FbbRemoval extends AnAction
         Project project = event.getData(PlatformDataKeys.PROJECT);
 
 
-        String fbName= Messages.showInputDialog(project, "What is your FB name?", "FB name input", IconLoader.getIcon("/icon.png"));
+        String fbName= Messages.showInputDialog(project, "Welcome to the FBB! \nFBB is a highly intelligent and advanced system for FB removal \n \n" +
+                "Lets begin! \nPlease enter the FeatureBit name:", "FB name input", IconLoader.getIcon("/icon.png"));
         try
         {
 
@@ -30,7 +31,7 @@ public class FbbRemoval extends AnAction
             fileScanner.scan();
             String output = fileScanner.printResults();
 
-            Messages.showMessageDialog(project, "Done, files that were changed: \n" + output, "Done" , IconLoader.getIcon("/icon.png"));
+            Messages.showMessageDialog(project, "Done!  \n" + output, "Done" , IconLoader.getIcon("/icon.png"));
 
 
         }

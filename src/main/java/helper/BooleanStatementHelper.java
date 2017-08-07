@@ -88,7 +88,8 @@ public class BooleanStatementHelper {
 
 
     private boolean expressionIsFB(Expression expression, String fbName) {
-        return isLeaf(expression) && featureBitDetector.isFeatureBit(expression.toString(), fbName);
+        return isLeaf(expression) && (expression instanceof MethodCallExpr)
+                && isMethodArgsContainsFB((MethodCallExpr) expression, fbName);
     }
 
     private boolean isEqualToOperator(BinaryExpr binaryExpr, BinaryExpr.Operator operator) {
@@ -102,4 +103,11 @@ public class BooleanStatementHelper {
         return expression instanceof MethodCallExpr || expression instanceof NameExpr;
     }
 
+    private boolean isMethodArgsContainsFB(MethodCallExpr call, String fbName){
+        for (Expression expression : call.getArguments()){
+            if (expression.toString().contains(fbName))
+                    return true;
+        }
+        return  false;
+    }
 }

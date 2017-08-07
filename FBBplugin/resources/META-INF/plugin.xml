@@ -29,6 +29,6 @@
   <actions>
     <group id="MyPlugin.FbbMenu" text="FBB" description="Feature Bit Removal">
       <add-to-group group-id="MainMenu" anchor="last"  />
-      <action id="Myplugin.FbbRemove" class="FbbRemoval" text="Remove FB Now!" description="" />
+      <action id="Myplugin.FbbRemove" class="FbbRemoval" text="Remove FB Now!" description="fbb"/>
     </group>  </actions>
 </idea-plugin>
